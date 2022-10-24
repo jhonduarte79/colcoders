@@ -27,6 +27,10 @@ export class Atraccion extends Entity {
   })
   imagen: string;
 
+  @property({
+    type: 'string',
+  })
+  parqueId?: string;
 
   constructor(data?: Partial<Atraccion>) {
     super(data);

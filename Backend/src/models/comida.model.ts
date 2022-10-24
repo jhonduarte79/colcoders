@@ -27,6 +27,10 @@ export class Comida extends Entity {
   })
   imagen: string;
 
+  @property({
+    type: 'string',
+  })
+  parqueId?: string;
 
   constructor(data?: Partial<Comida>) {
     super(data);

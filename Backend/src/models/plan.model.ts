@@ -27,6 +27,10 @@ export class Plan extends Entity {
   })
   color: string;
 
+  @property({
+    type: 'string',
+  })
+  parqueId?: string;
 
   constructor(data?: Partial<Plan>) {
     super(data);

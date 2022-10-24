@@ -1,4 +1,8 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Zona} from './zona.model';
+import {Atraccion} from './atraccion.model';
+import {Plan} from './plan.model';
+import {Comida} from './comida.model';
 
 @model()
 export class Parque extends Entity {
@@ -51,6 +55,22 @@ export class Parque extends Entity {
   })
   imagen: string;
 
+  @property({
+    type: 'string',
+  })
+  ciudadId?: string;
+
+  @hasMany(() => Zona)
+  zonas: Zona[];
+
+  @hasMany(() => Atraccion)
+  atracciones: Atraccion[];
+
+  @hasMany(() => Plan)
+  planes: Plan[];
+
+  @hasMany(() => Comida)
+  comidas: Comida[];
 
   constructor(data?: Partial<Parque>) {
     super(data);

@@ -27,6 +27,10 @@ export class Zona extends Entity {
   })
   color: string;
 
+  @property({
+    type: 'string',
+  })
+  parqueId?: string;
 
   constructor(data?: Partial<Zona>) {
     super(data);
