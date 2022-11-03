@@ -10,3 +10,4 @@ export * from './parque.model';
 export * from './venta.model';
 export * from './administrador.model';
 export * from './compra.model';
+export * from './credenciales.model';

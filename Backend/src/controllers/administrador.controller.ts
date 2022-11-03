@@ -17,7 +17,7 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Administrador} from '../models';
+import {Administrador, Credenciales} from '../models';
 import {AdministradorRepository} from '../repositories';
 
 export class AdministradorController {
@@ -146,5 +146,21 @@ export class AdministradorController {
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.administradorRepository.deleteById(id);
+  }
+
+  @post('/Login')
+  @response(200, {
+    description: 'identificar administradores'
+  })
+  async identicar(
+    @requestBody() credenciales:Credenciales
+  ):Promise<Administrador | null>{
+    let personaEncontrada = await this.administradorRepository.findOne({
+      where:{
+        email: credenciales.usuario,
+        password: credenciales.password
+      }
+    });
+    return personaEncontrada;
   }
 }
