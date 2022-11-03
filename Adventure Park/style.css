@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body{
+    margin: 0;
+    padding: 0;
+    height: calc(100vh - 60px);
+    width: calc(100% - 20px);
+    background-image: url(img/fondo.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;    
+    *transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+
+/* BARRA DEL MENU */
+
+.menu{
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+}
+
+.menu a{
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    padding: 10px;
+    font-family: "Roboto";
+    font-weight: 600;
+    *text-transform: uppercase;
+
+}
+
+.menu a:hover{
+    color: red;
+    transition: .8s;
+}
+
+.menu .aqui{
+    color: red;
+}
+
+/* TITULOS, PARRAFOS Y BOTON */
+
+h1{
+    text-align: center;
+    color: #EBAA48;
+    align-items: center;
+    margin-top: 50px;
+    font-size: 60px;
+    *text-transform: uppercase;
+}
+.texto{
+    color: white;
+    margin-top: 140px;
+    padding-left: 140px;
+    align-items: center;
+    font-size: 38px;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.par{
+    color: white;
+    margin-top: 2px;
+    padding-left: 100px;
+    align-items: center;
+    font-size: 38px;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.container{
+    margin-top: 100px;
+    padding-left: 450px;
+}
+
+.btn{
+    text-align: center;
+    align-items: center;
+    margin-top: 160px;
+    padding: 12px 22px;
+    color: white;
+    background: linear-gradient(90.01deg, #0047FF -2.04%, #2CFFB3 137.49%);
+    border-radius: 34px;
+    font-size: 24px;
+    text-decoration: none;
+    justify-content: space-around;
+    font-family: "Roboto";
+    font-weight: 800;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
