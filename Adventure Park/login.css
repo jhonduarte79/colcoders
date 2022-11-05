@@ -64,7 +64,7 @@ h1 {
 
 main {
     width: 100%;
-    height: calc(100vh - 226px);
+    margin-top: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,6 +78,7 @@ button {
 }
 
 .cont {
+    display: inline-flex;
     border-radius: 50px;
     border-color: #0067a2;
     overflow: hidden;
@@ -104,7 +105,7 @@ h2 {
     font-size: 36px;
     text-align: center;
     color: rgb(0, 148, 148);
-    text-transform: uppercase;
+    *text-transform: uppercase;
 }
 
 h3 {
