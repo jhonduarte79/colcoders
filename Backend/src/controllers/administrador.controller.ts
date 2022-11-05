@@ -1,3 +1,4 @@
+import { service } from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -19,11 +20,15 @@ import {
 } from '@loopback/rest';
 import {Administrador, Credenciales} from '../models';
 import {AdministradorRepository} from '../repositories';
+import { AutenticacionService } from '../services';
+const fetch = require("node-fetch");
 
 export class AdministradorController {
   constructor(
     @repository(AdministradorRepository)
     public administradorRepository : AdministradorRepository,
+    @service(AutenticacionService)
+    public servicioAutenticacion:AutenticacionService
   ) {}
 
   @post('/administradores')
@@ -44,7 +49,22 @@ export class AdministradorController {
     })
     administrador: Omit<Administrador, 'id'>,
   ): Promise<Administrador> {
-    return this.administradorRepository.create(administrador);
+    
+    let clave = this.servicioAutenticacion.GenerarPassword();
+    let claveCifrada = this.servicioAutenticacion.EncriptarPassword(clave);
+    administrador.password = claveCifrada;
+
+    let a = await this.administradorRepository.create(administrador);
+   
+    //notificacion al usuario 
+    let destino = a.email;
+    let asunto = "Registro en Adventure Park";
+    let mensaje = `Hola, ${a.nombres}, su usuario es: ${a.email} y su contraseña es: ${clave}`
+    
+    fetch(`http://localhost:5000/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
+      console.log(data);
+    });
+    return a;
   }
 
   @get('/administradores/count')
@@ -155,6 +175,7 @@ export class AdministradorController {
   async identicar(
     @requestBody() credenciales:Credenciales
   ):Promise<Administrador | null>{
+    credenciales.password = this.servicioAutenticacion.EncriptarPassword(credenciales.password);
     let personaEncontrada = await this.administradorRepository.findOne({
       where:{
         email: credenciales.usuario,
