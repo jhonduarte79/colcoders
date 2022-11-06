@@ -17,7 +17,9 @@ import {
   del,
   requestBody,
   response,
+  HttpErrors,
 } from '@loopback/rest';
+import { keys } from '../configuracion/keys';
 import {Administrador, Credenciales} from '../models';
 import {AdministradorRepository} from '../repositories';
 import { AutenticacionService } from '../services';
@@ -61,7 +63,7 @@ export class AdministradorController {
     let asunto = "Registro en Adventure Park";
     let mensaje = `Hola, ${a.nombres}, su usuario es: ${a.email} y su contraseña es: ${clave}`
     
-    fetch(`http://localhost:5000/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
+    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
       console.log(data);
     });
     return a;
@@ -183,5 +185,28 @@ export class AdministradorController {
       }
     });
     return personaEncontrada;
+  }
+
+  @post('/LoginT')
+  @response(200, {
+    description: "identificacion de administrador por token"
+  })
+  async identificarToken(
+    @requestBody() credenciales:Credenciales
+  ){
+    credenciales.password = this.servicioAutenticacion.EncriptarPassword(credenciales.password);
+    let a = await  this.servicioAutenticacion.IdentificarAdministrador(credenciales);
+    if(a){
+      let token = this.servicioAutenticacion.GenerarToken(a);
+      return {
+        informacion:{
+          nombre: a.nombres,
+          id: a.id
+        },
+        tk: token
+      }
+    }else{
+      throw new HttpErrors[401]("Datos no son correctos");
+    }
   }
 }
