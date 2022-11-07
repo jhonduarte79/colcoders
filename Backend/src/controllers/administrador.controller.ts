@@ -20,7 +20,7 @@ import {
   HttpErrors,
 } from '@loopback/rest';
 import { keys } from '../configuracion/keys';
-import {Administrador, Credenciales} from '../models';
+import {Administrador, Credenciales, Rol} from '../models';
 import {AdministradorRepository} from '../repositories';
 import { AutenticacionService } from '../services';
 const fetch = require("node-fetch");
@@ -201,7 +201,8 @@ export class AdministradorController {
       return {
         informacion:{
           nombre: a.nombres,
-          id: a.id
+          id: a.id,
+          Rol: a.rolId
         },
         tk: token
       }

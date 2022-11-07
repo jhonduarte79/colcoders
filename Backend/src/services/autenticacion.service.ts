@@ -1,7 +1,7 @@
 import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 import { repository } from '@loopback/repository';
 import { keys } from '../configuracion/keys';
-import { Administrador, Credenciales } from '../models';
+import { Administrador, Credenciales, Rol } from '../models';
 import { AdministradorRepository } from '../repositories';
 const generador=require("generate-password");
 const cryptoJS=require("crypto-js");
@@ -30,7 +30,7 @@ export class AutenticacionService {
   IdentificarAdministrador(credenciales:Credenciales){
     try {
       let a = this.repositorioAdministrador.findOne({
-        where: {email:credenciales.usuario, password:credenciales.password}
+        where: {email:credenciales.usuario, password:credenciales.password}, include: ['rolId']
       });
       if(a){
         return a;
@@ -45,7 +45,8 @@ export class AutenticacionService {
       data:{
         id: administrador.id,
         email: administrador.email,
-        nombre: administrador.nombres + " "+ administrador.apellidos
+        nombre: administrador.nombres + " "+ administrador.apellidos,
+        rol: administrador.rolId
       }
     }, keys.claveJWT
     )
