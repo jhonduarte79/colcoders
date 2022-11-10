@@ -30,7 +30,7 @@ export class AutenticacionService {
   IdentificarAdministrador(credenciales:Credenciales){
     try {
       let a = this.repositorioAdministrador.findOne({
-        where: {email:credenciales.usuario, password:credenciales.password}, include: ['rolId']
+        where: {email:credenciales.usuario, password:credenciales.password}
       });
       if(a){
         return a;
@@ -46,6 +46,7 @@ export class AutenticacionService {
         id: administrador.id,
         email: administrador.email,
         nombre: administrador.nombres + " "+ administrador.apellidos,
+        cargo: administrador.cargo,
         rol: administrador.rolId
       }
     }, keys.claveJWT

@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -19,13 +20,15 @@ import {
 } from '@loopback/rest';
 import {Departamento} from '../models';
 import {DepartamentoRepository} from '../repositories';
+import { AutenticacionService } from '../services';
 
+@authenticate("configurador")
 export class DepartamentoController {
   constructor(
     @repository(DepartamentoRepository)
     public departamentoRepository : DepartamentoRepository,
   ) {}
-
+  
   @post('/departamentos')
   @response(200, {
     description: 'Departamento model instance',

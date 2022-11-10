@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import { service } from '@loopback/core';
 import {
   Count,
@@ -26,13 +27,14 @@ import { AutenticacionService } from '../services';
 const fetch = require("node-fetch");
 
 export class AdministradorController {
-  constructor(
+ constructor(
     @repository(AdministradorRepository)
     public administradorRepository : AdministradorRepository,
     @service(AutenticacionService)
     public servicioAutenticacion:AutenticacionService
   ) {}
 
+  @authenticate("financiero")
   @post('/administradores')
   @response(200, {
     description: 'Administrador model instance',
@@ -200,9 +202,10 @@ export class AdministradorController {
       let token = this.servicioAutenticacion.GenerarToken(a);
       return {
         informacion:{
-          nombre: a.nombres,
+          nombre: a.nombres+" "+a.apellidos,
           id: a.id,
-          Rol: a.rolId
+          cargo: a.cargo,
+          rol: a.rolId
         },
         tk: token
       }

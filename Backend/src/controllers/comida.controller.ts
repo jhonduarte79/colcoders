@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {Comida} from '../models';
 import {ComidaRepository} from '../repositories';
 
+@authenticate("configurador")
 export class ComidaController {
   constructor(
     @repository(ComidaRepository)
