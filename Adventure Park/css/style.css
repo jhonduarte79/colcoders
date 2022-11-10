@@ -5,7 +5,7 @@ body{
     padding: 0;
     height: calc(100vh - 60px);
     width: calc(100vw - 20px);
-    background-image: url(img/fondo.jpg);
+    background-image: url(../img/fondo.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -16,7 +16,7 @@ body{
 /* BARRA DEL MENU */
 
 .menu{
-    margin-top: 2.5rem;
+    margin-top: 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -43,70 +43,36 @@ body{
     color: red;
 }
 
-/* TITULOS, PARRAFOS Y BOTON */
+/*.toggle-button{
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+}*/
 
-.form{
-    display: block;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
+/*.toggle-button .barra{
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 30px;
+}*/
+
+/* TITULOS, PARRAFOS Y BOTON */
 
 h1{
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: #2CFFB3;
+    color: #ff3700;
+    -webkit-text-stroke: 2px rgb(255, 255, 255);
     align-items: center;
     margin-top: 3.125rem;
     font-size: 3.75rem;
     *text-transform: uppercase;
-}
-
-.texto {    
-    color: white;
-    margin-top: 8.75rem;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.375rem;
-    font-weight: 600;
-    font-style: italic;
-    position: relative;
-    text-align: center;
-}
-
-p{
-    color: white;
-    margin-top: 0.125rem;
-    align-items: center;
-    font-size: 2.375rem;
-    font-weight: 600;
-    font-style: italic;
-    justify-content: center;
-    text-align: center;
-}
-
-.container{
-    margin-top: 6.25rem;
-    align-items: center;
-    justify-content: space-around;
-    text-align: center;
-}
-
-.container a:hover{
-    transform: scale(1.1);
-}
-
-.btn{
-    margin-top: 10rem;
-    padding: 0.75rem 1.375rem;
-    color: white;
-    background: linear-gradient(90.01deg, #0047FF -2.04%, #2CFFB3 137.49%);
-    border-radius: 2.125rem;
-    font-size: 1.5rem;
-    text-decoration: none;
-    font-family: "Roboto";
-    font-weight: 800;
 }
 
 /* SLIDER */
@@ -116,8 +82,8 @@ main{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2px;
-    border: 4px;
+    padding: 8px;
+    border: 4px;    
 }
 
 img{
@@ -130,7 +96,10 @@ img{
     width: 100%;
     border-radius: 36px;
     overflow: hidden;
-    border: 8px solid #2cffb26e;
+    border: 16px solid #ff3700;
+    border-top: 40px;
+    border-bottom: 2px;
+    bottom: 20px;   
 }
 
 .slide{
@@ -169,13 +138,13 @@ img{
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid #2CFFB3;
+    border: 1px solid #ffffff;
     width: 16px;
     height: 16px;
     border-radius: 18px;
     overflow: hidden;
     cursor: pointer;
-    background: #2cffb250;
+    background: #ff000050;
     margin: 0 10px;
     text-align: center;
     transition: all 300ms;
@@ -191,7 +160,7 @@ img{
     height: 100%;
     transform: scale(1);
     opacity: 0;
-    transition: all 300ms;
+    transition: all 800ms;
 }
 
 .paginacion-item:hover img{
@@ -205,7 +174,7 @@ input[id="1"]:checked ~ .slide{
 }
 
 input[id="1"]:checked ~ .paginacion .paginacion-item[for="1"]{
-    background: white;
+    background: #ff0000;
 }
 
 input[id="2"]:checked ~ .slide{
@@ -214,7 +183,7 @@ input[id="2"]:checked ~ .slide{
 }
 
 input[id="2"]:checked ~ .paginacion .paginacion-item[for="2"]{
-    background: white;
+    background: #ff0000;
 }
 
 input[id="3"]:checked ~ .slide{
@@ -223,7 +192,7 @@ input[id="3"]:checked ~ .slide{
 }
 
 input[id="3"]:checked ~ .paginacion .paginacion-item[for="3"]{
-    background: white;
+    background: #ff0000;
 }
 
 input[id="4"]:checked ~ .slide{
@@ -232,7 +201,7 @@ input[id="4"]:checked ~ .slide{
 }
 
 input[id="4"]:checked ~ .paginacion .paginacion-item[for="4"]{
-    background: white;
+    background: #ff0000;
 }
 
 input[id="5"]:checked ~ .slide{
@@ -241,7 +210,7 @@ input[id="5"]:checked ~ .slide{
 }
 
 input[id="5"]:checked ~ .paginacion .paginacion-item[for="5"]{
-    background: white;
+    background: #ff0000;
 }
 
 input[id="6"]:checked ~ .slide{
@@ -250,7 +219,7 @@ input[id="6"]:checked ~ .slide{
 }
 
 input[id="6"]:checked ~ .paginacion .paginacion-item[for="6"]{
-    background: white;
+    background: #ff0000;
 }
 
 input[id="7"]:checked ~ .slide{
@@ -259,7 +228,7 @@ input[id="7"]:checked ~ .slide{
 }
 
 input[id="7"]:checked ~ .paginacion .paginacion-item[for="7"]{
-    background: white;
+    background: #ff0000;
 }
 
 input[id="8"]:checked ~ .slide{
@@ -268,7 +237,7 @@ input[id="8"]:checked ~ .slide{
 }
 
 input[id="8"]:checked ~ .paginacion .paginacion-item[for="8"]{
-    background: white;
+    background: #ff0000;
 }
 
 input[id="9"]:checked ~ .slide{
@@ -277,7 +246,7 @@ input[id="9"]:checked ~ .slide{
 }
 
 input[id="9"]:checked ~ .paginacion .paginacion-item[for="9"]{
-    background: white;
+    background: #ff0000;
 }
 
 input[id="10"]:checked ~ .slide{
@@ -286,7 +255,7 @@ input[id="10"]:checked ~ .slide{
 }
 
 input[id="10"]:checked ~ .paginacion .paginacion-item[for="10"]{
-    background: white;
+    background: #ff0000;
 }
 
 @keyframes autoplay {
@@ -331,10 +300,73 @@ input[id="10"]:checked ~ .paginacion .paginacion-item[for="10"]{
     font-weight: bolder;
 }
 
+footer{
+    padding: 60px;
+}
+
 /* MENU RESPONSIVO */
 
 
 
+/* CONTENIDO RESPONSIVO */
+
+@media screen and (max-width:920px){
+
+    h1{
+        font-size: 50px;
+    }
+
+    .todo{
+        width: 100vw;
+        max-width: 740px;
+        justify-content: space-around;
+        height: 400px;
+        border-radius: none;
+    }
+}
+
+@media screen and (max-width:600px){
+
+    h1{
+        font-size: 50px;
+    }
+
+    .todo{
+        max-width: 450px;
+        height: 252px;
+    }
+}
+
+@media screen and (max-width:450px){
+
+    h1{
+        font-size: 40px;
+        text-align: center;
+    }
+
+    .todo{
+        max-width: 450px;
+        height: 200px;
+        transition: all 300ms;
+    }
+
+    .paginacion-item{
+        display: none;
+    }
+}
+
+@media screen and (max-width:310px){
+
+    h1{
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .todo{
+        max-width: 300px;
+        height: 136px;
+    }
+}
 
 
 
