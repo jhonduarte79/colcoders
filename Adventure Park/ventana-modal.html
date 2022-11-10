@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Mensaje</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/ventana-modal.css" rel="stylesheet" />
+    <link rel="icon" href="img/icono.png" />
+  </head>
+  <body>
+    <div class="contenedor" id="modal">
+      <div class="pop-up">
+        <div class="banner"></div>
+        <div class="texto">
+          <h1>Adventure Park Te Comunica: </h1>
+          <p class="mensaje"></p>
+        </div>        
+        <a href="#" class="btn-cerrar" id="x" onclick="ventanaModal();">X</a>
+        <!--<button type="button" class="btn-cerrar" onclick="cerrar()">X</button>-->
+      </div>
+    </div>
+
+    <script>
+
+      function ventanaModal(){
+
+        const ventana = document.querySelector(".pop-up");
+        const btnCerrar = document.querySelector('.btn-cerrar');
+
+        btn-cerrar.addEventListener('click', (cerrar) => {
+        pop-up.close();
+        });
+
+      }      
+
+    </script>
+  </body>
+</html>
