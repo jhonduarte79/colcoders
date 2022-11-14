@@ -34,6 +34,12 @@ export class Visitante extends Entity {
   celular: string;
 
   @property({
+    type: 'string',
+    required: false,
+  })
+  password?: string;
+
+  @property({
     type: 'number',
     required: true,
   })

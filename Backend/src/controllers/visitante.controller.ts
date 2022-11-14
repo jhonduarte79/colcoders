@@ -1,3 +1,4 @@
+import { service } from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -17,13 +18,18 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Visitante} from '../models';
+import { keys } from '../configuracion/keys';
+import {CambiarPassword, Credenciales, Visitante} from '../models';
 import {VisitanteRepository} from '../repositories';
+import { AutenticacionService } from '../services';
+const fetch = require("node-fetch");
 
 export class VisitanteController {
   constructor(
     @repository(VisitanteRepository)
     public visitanteRepository : VisitanteRepository,
+    @service(AutenticacionService)
+    public servicioAutenticacion:AutenticacionService
   ) {}
 
   @post('/visitantes')
@@ -44,7 +50,21 @@ export class VisitanteController {
     })
     visitante: Omit<Visitante, 'id'>,
   ): Promise<Visitante> {
-    return this.visitanteRepository.create(visitante);
+    let clave = this.servicioAutenticacion.GenerarPassword();
+    let claveCifrada = this.servicioAutenticacion.EncriptarPassword(clave);
+    visitante.password = claveCifrada;
+
+    let v = await this.visitanteRepository.create(visitante);
+   
+    //notificacion al usuario 
+    let destino = v.email;
+    let asunto = "Registro en Adventure Park";
+    let mensaje = `Hola ${v.nombre}, su usuario es: ${v.email} y su contraseña es: ${clave}`
+    
+    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
+      console.log(data);
+    });
+    return v;
   }
 
   @get('/visitantes/count')
@@ -146,5 +166,86 @@ export class VisitanteController {
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.visitanteRepository.deleteById(id);
+  }
+
+  @post('/Login')
+  @response(200, {
+    description: 'identificar visitante'
+  })
+  async identicar(
+    @requestBody() credenciales:Credenciales
+  ):Promise<Visitante | null>{
+    credenciales.password = this.servicioAutenticacion.EncriptarPassword(credenciales.password);
+    let personaEncontrada = await this.visitanteRepository.findOne({
+      where:{
+        email: credenciales.usuario,
+        password: credenciales.password
+      }
+    });
+    return personaEncontrada;
+  }
+
+  @post('/recuperacionPassword')
+  @response(200, {
+    description: "recuperacion de contraseña visitante"
+  })
+  async recuperacionPassword(
+    @requestBody() correo: string
+  ): Promise<Boolean>{
+    let a = await this.visitanteRepository.findOne({
+      where: {
+        email: correo 
+      }
+    });
+    if (a) {
+      let clave = this.servicioAutenticacion.GenerarPassword();
+      let claveCifrada = this.servicioAutenticacion.EncriptarPassword(clave);
+      a.password = claveCifrada;
+      await this.visitanteRepository.updateById(a.id, a);
+
+    let destino = a.email;
+    let asunto = "Recuperacion de contraseña de adventure park";
+    let mensaje = `Hola ${a.nombre}, su nueva contraseña de ingreso es: ${clave}`;
+    
+    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
+      console.log(data);
+    });
+    return true;
+    } else {
+      return false;
+    }
+  }
+
+  @post('/cambiarPassword')
+  @response(200, {
+    description: "asignar contraseña a visitantes"
+  })
+  async cambiar(
+    @requestBody() cambiar: CambiarPassword
+  ):Promise<Boolean>{
+    let passCifrado = this.servicioAutenticacion.EncriptarPassword(cambiar.actual);
+    let a = await this.visitanteRepository.findOne({
+      where: {
+        password: passCifrado
+      }
+    });
+    if(a){
+      if(cambiar.nueva == cambiar.revalidar){
+        a.password = this.servicioAutenticacion.EncriptarPassword(cambiar.revalidar);
+        await this.visitanteRepository.updateById(a.id, a);
+
+    let destino = a.email;
+    let asunto = "Cambio de contraseña de adventure park";
+    let mensaje = `Hola ${a.nombre}, usted cambio su contraseña de ingreso, ahora es: ${cambiar.revalidar}`;
+    
+    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
+      console.log(data);
+    });
+
+        return true;
+      }
+      return false;
+    }
+    return false;
   }
 }

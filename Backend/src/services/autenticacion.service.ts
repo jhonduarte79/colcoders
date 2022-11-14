@@ -40,6 +40,7 @@ export class AutenticacionService {
       return false;
     }
   }
+  
   GenerarToken(administrador:Administrador){
     let token = JWT.sign({
       data:{

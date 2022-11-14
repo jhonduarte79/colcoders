@@ -21,7 +21,7 @@ import {
   HttpErrors,
 } from '@loopback/rest';
 import { keys } from '../configuracion/keys';
-import {Administrador, Credenciales, Rol} from '../models';
+import {Administrador, CambiarPassword, Credenciales, Rol} from '../models';
 import {AdministradorRepository} from '../repositories';
 import { AutenticacionService } from '../services';
 const fetch = require("node-fetch");
@@ -53,7 +53,7 @@ export class AdministradorController {
     })
     administrador: Omit<Administrador, 'id'>,
   ): Promise<Administrador> {
-    
+  
     let clave = this.servicioAutenticacion.GenerarPassword();
     let claveCifrada = this.servicioAutenticacion.EncriptarPassword(clave);
     administrador.password = claveCifrada;
@@ -63,7 +63,7 @@ export class AdministradorController {
     //notificacion al usuario 
     let destino = a.email;
     let asunto = "Registro en Adventure Park";
-    let mensaje = `Hola, ${a.nombres}, su usuario es: ${a.email} y su contraseña es: ${clave}`
+    let mensaje = `Hola ${a.nombres}, su usuario es: ${a.email} y su contraseña es: ${clave}`
     
     fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
       console.log(data);
@@ -213,4 +213,68 @@ export class AdministradorController {
       throw new HttpErrors[401]("Datos no son correctos");
     }
   }
+
+  @post('/recuperacionPassword')
+  @response(200, {
+    description: "recuperacion de contraseña administradores"
+  })
+  async recuperacionPassword(
+    @requestBody() correo: string
+  ): Promise<Boolean>{
+    let a = await this.administradorRepository.findOne({
+      where: {
+        email: correo 
+      }
+    });
+    if (a) {
+      let clave = this.servicioAutenticacion.GenerarPassword();
+      let claveCifrada = this.servicioAutenticacion.EncriptarPassword(clave);
+      a.password = claveCifrada;
+      await this.administradorRepository.updateById(a.id, a);
+
+    let destino = a.email;
+    let asunto = "Recuperacion de contraseña de adventure park";
+    let mensaje = `Hola ${a.nombres}, su nueva contraseña de ingreso es: ${clave}`;
+    
+    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
+      console.log(data);
+    });
+    return true;
+    } else {
+      return false;
+    }
+  }
+  @post('/cambiarPassword')
+  @response(200, {
+    description: "asignar contraseña a administradores"
+  })
+  async cambiar(
+    @requestBody() cambiar: CambiarPassword
+  ):Promise<Boolean>{
+    let passCifrado = this.servicioAutenticacion.EncriptarPassword(cambiar.actual);
+    let a = await this.administradorRepository.findOne({
+      where: {
+        password: passCifrado
+      }
+    });
+    if(a){
+      if(cambiar.nueva == cambiar.revalidar){
+        a.password = this.servicioAutenticacion.EncriptarPassword(cambiar.revalidar);
+        await this.administradorRepository.updateById(a.id, a);
+
+    let destino = a.email;
+    let asunto = "Cambio de contraseña de adventure park";
+    let mensaje = `Hola ${a.nombres}, usted cambio su contraseña de ingreso, ahora es: ${cambiar.revalidar}`;
+    
+    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
+      console.log(data);
+    });
+
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
 }
