@@ -11,6 +11,7 @@ import { PerfilComponent } from './general/perfil/perfil.component';
 import { SalirComponent } from './general/salir/salir.component';
 import { DesautorizarGuard } from 'src/app/guardianes/desautorizar.guard';
 import { AdministracionComponent } from '../parametros/administracion/administracion.component';
+import { OlvidePasswordComponent } from './general/olvide-password/olvide-password.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,10 @@ const routes: Routes = [
   {
     path:"administracion",
     component: AdministracionComponent
+  },
+  {
+    path:"recovery",
+    component: OlvidePasswordComponent
   },
   {
     path:"**",

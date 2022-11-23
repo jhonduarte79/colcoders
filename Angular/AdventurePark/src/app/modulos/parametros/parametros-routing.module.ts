@@ -37,7 +37,7 @@ const routes: Routes = [
     component:RestaurantesComponent
   },
   {
-    path:"visitantes",
+    path:"clientes",
     component:ClientesComponent
   },
   {

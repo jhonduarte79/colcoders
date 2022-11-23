@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     } else if (this.formularioDatos.controls['password'].invalid){
         GenerarVentanaModal("La Contraseña No Es Valida.");    
     } else if (this.formularioDatos.controls['recaptcha'].invalid){
-        GenerarVentanaModal("Confirme Que No Es Robot.");    
+        GenerarVentanaModal("Confirme Que No Es Un Robot.");    
     } else {
       let credenciales = new CredencialesUserModel();
       credenciales.usuario = this.formularioDatos.controls['usuario'].value;

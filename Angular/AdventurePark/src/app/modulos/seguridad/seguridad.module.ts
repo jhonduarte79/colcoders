@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfilComponent } from './general/perfil/perfil.component';
 import { SalirComponent } from './general/salir/salir.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
+import { OlvidePasswordComponent } from './general/olvide-password/olvide-password.component';
 
 
 
@@ -36,7 +37,8 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     TicketsComponent,
     RegistroComponent,
     PerfilComponent,
-    SalirComponent
+    SalirComponent,
+    OlvidePasswordComponent,
   ],
   imports: [
     CommonModule,

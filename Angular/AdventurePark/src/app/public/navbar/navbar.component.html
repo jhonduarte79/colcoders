@@ -10,7 +10,7 @@
         <li *ngIf="!sesionActiva"><a routerLink="/seguridad/registro">Registrarme</a></li>
         <li *ngIf="!sesionActiva"><a routerLink="/seguridad/perfil">Perfil</a></li>
         <li *ngIf="!sesionActiva"><a routerLink="/seguridad/administracion">Administración</a></li>
-        <li *ngIf="sesionActiva"><a routerLink="/seguridad/salir">Salir</a></li>
+        <li *ngIf="!sesionActiva"><a routerLink="/seguridad/salir">Salir</a></li>
       </ul>
     </div>
   </nav>
