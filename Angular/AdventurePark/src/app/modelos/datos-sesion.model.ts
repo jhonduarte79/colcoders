@@ -2,6 +2,11 @@ import { DatosUserModel } from "./datos-user.model";
 
 export class DatosSesionModel {
     tk?: string;
-    usuario?: DatosUserModel;
+    /* nombre?: DatosUserModel;
+    id?: DatosUserModel;
+    cargo?: DatosUserModel;
+    rol?: DatosUserModel; */
+    info?: DatosUserModel;
     isLoggedIn:boolean = false;
+    
 }

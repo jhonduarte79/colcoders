@@ -20,8 +20,9 @@ export class SeguridadService {
   ) { }
 
     Login(credenciales:CredencialesUserModel):Observable<any>{
+      console.log(credenciales.usuario, credenciales.password)
 
-      return this.http.post(`${this.url}/login`, credenciales);
+      return this.http.post(`${this.url}/LoginT`, {usuario:credenciales.usuario, password:credenciales.password});
 
     }
 

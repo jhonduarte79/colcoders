@@ -25,13 +25,12 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/assets/Css/ventana-modal.css",
-              "node_modules/materialize-css/dist/css/materialize.min.css"
+              "src/assets/Css/ventana-modal.css"
+            
             ],
             "scripts": [
-              "node_modules/materialize-css/dist/js/materialize.js",
-              "src/assets/Js/funciones.js",
-              "src/assets/Js/navbar.js"
+              "src/assets/Js/funciones.js"
+            
             ]
           },
           "configurations": {

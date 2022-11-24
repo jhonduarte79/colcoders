@@ -1,7 +1,11 @@
 export class DatosUserModel {
-    nombre?: string;
-    celular?: string;
     id?: string;
-    correo?: string;
-    roles?: [];
+    nombres?: string;
+    apellidos?: string;
+    //email?: string;
+    //usuario?: string;
+    //password?: string;
+    //celular?: string;
+    cargo?: string;
+    rol?: [];
 }

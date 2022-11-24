@@ -51,11 +51,14 @@ export class LoginComponent implements OnInit {
     } else {
       let credenciales = new CredencialesUserModel();
       credenciales.usuario = this.formularioDatos.controls['usuario'].value;
+      
       credenciales.password = CryptoJS.MD5(this.formularioDatos.controls['password'].value).toString();
+      console.log(credenciales.usuario, credenciales.password)
       this.servicioSeguridad.Login(credenciales).subscribe({
         next: (datos:DatosSesionModel) => {
           console.log(datos);
           let guardar = this.servicioLocalStorage.GuardarDatosSesion(datos);
+          console.log(guardar)
           datos.isLoggedIn = true;
           this.servicioSeguridad.ActualizarDatosSesion(datos);
           this.router.navigate(['/inicio']);

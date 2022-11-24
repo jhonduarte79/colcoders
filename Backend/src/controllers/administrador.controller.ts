@@ -1,40 +1,34 @@
-import { authenticate } from '@loopback/authentication';
-import { service } from '@loopback/core';
+import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
-  HttpErrors,
+  del, get,
+  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
-import { keys } from '../configuracion/keys';
-import {Administrador, CambiarPassword, Credenciales, Rol} from '../models';
+import {keys} from '../configuracion/keys';
+import {Administrador, CambiarPassword, Credenciales} from '../models';
 import {AdministradorRepository} from '../repositories';
-import { AutenticacionService } from '../services';
+import {AutenticacionService} from '../services';
 const fetch = require("node-fetch");
 
 export class AdministradorController {
- constructor(
+  constructor(
     @repository(AdministradorRepository)
-    public administradorRepository : AdministradorRepository,
+    public administradorRepository: AdministradorRepository,
     @service(AutenticacionService)
-    public servicioAutenticacion:AutenticacionService
-  ) {}
+    public servicioAutenticacion: AutenticacionService
+  ) { }
 
   @authenticate("financiero")
+
   @post('/administradores')
   @response(200, {
     description: 'Administrador model instance',
@@ -53,19 +47,19 @@ export class AdministradorController {
     })
     administrador: Omit<Administrador, 'id'>,
   ): Promise<Administrador> {
-  
+
     let clave = this.servicioAutenticacion.GenerarPassword();
     let claveCifrada = this.servicioAutenticacion.EncriptarPassword(clave);
     administrador.password = claveCifrada;
 
     let a = await this.administradorRepository.create(administrador);
-   
-    //notificacion al usuario 
+
+    //notificacion al usuario
     let destino = a.email;
     let asunto = "Registro en Adventure Park";
     let mensaje = `Hola ${a.nombres}, su usuario es: ${a.email} y su contraseña es: ${clave}`
-    
-    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
+
+    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data: any) => {
       console.log(data);
     });
     return a;
@@ -177,11 +171,11 @@ export class AdministradorController {
     description: 'identificar administradores'
   })
   async identicar(
-    @requestBody() credenciales:Credenciales
-  ):Promise<Administrador | null>{
+    @requestBody() credenciales: Credenciales
+  ): Promise<Administrador | null> {
     credenciales.password = this.servicioAutenticacion.EncriptarPassword(credenciales.password);
     let personaEncontrada = await this.administradorRepository.findOne({
-      where:{
+      where: {
         email: credenciales.usuario,
         password: credenciales.password
       }
@@ -194,22 +188,22 @@ export class AdministradorController {
     description: "identificacion de administrador por token"
   })
   async identificarToken(
-    @requestBody() credenciales:Credenciales
-  ){
-    credenciales.password = this.servicioAutenticacion.EncriptarPassword(credenciales.password);
-    let a = await  this.servicioAutenticacion.IdentificarAdministrador(credenciales);
-    if(a){
+    @requestBody() credenciales: Credenciales
+  ) {
+    //credenciales.password = this.servicioAutenticacion.EncriptarPassword(credenciales.password);
+    let a = await this.servicioAutenticacion.IdentificarAdministrador(credenciales);
+    if (a) {
       let token = this.servicioAutenticacion.GenerarToken(a);
       return {
-        informacion:{
-          nombre: a.nombres+" "+a.apellidos,
+        info: {
+          nombre: a.nombres + " " + a.apellidos,
           id: a.id,
           cargo: a.cargo,
           rol: a.rolId
         },
         tk: token
       }
-    }else{
+    } else {
       throw new HttpErrors[401]("Datos no son correctos");
     }
   }
@@ -220,10 +214,10 @@ export class AdministradorController {
   })
   async recuperacionPassword(
     @requestBody() correo: string
-  ): Promise<Boolean>{
+  ): Promise<Boolean> {
     let a = await this.administradorRepository.findOne({
       where: {
-        email: correo 
+        email: correo
       }
     });
     if (a) {
@@ -232,14 +226,14 @@ export class AdministradorController {
       a.password = claveCifrada;
       await this.administradorRepository.updateById(a.id, a);
 
-    let destino = a.email;
-    let asunto = "Recuperacion de contraseña de adventure park";
-    let mensaje = `Hola ${a.nombres}, su nueva contraseña de ingreso es: ${clave}`;
-    
-    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
-      console.log(data);
-    });
-    return true;
+      let destino = a.email;
+      let asunto = "Recuperacion de contraseña de adventure park";
+      let mensaje = `Hola ${a.nombres}, su nueva contraseña de ingreso es: ${clave}`;
+
+      fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data: any) => {
+        console.log(data);
+      });
+      return true;
     } else {
       return false;
     }
@@ -250,25 +244,25 @@ export class AdministradorController {
   })
   async cambiar(
     @requestBody() cambiar: CambiarPassword
-  ):Promise<Boolean>{
+  ): Promise<Boolean> {
     let passCifrado = this.servicioAutenticacion.EncriptarPassword(cambiar.actual);
     let a = await this.administradorRepository.findOne({
       where: {
         password: passCifrado
       }
     });
-    if(a){
-      if(cambiar.nueva == cambiar.revalidar){
+    if (a) {
+      if (cambiar.nueva == cambiar.revalidar) {
         a.password = this.servicioAutenticacion.EncriptarPassword(cambiar.revalidar);
         await this.administradorRepository.updateById(a.id, a);
 
-    let destino = a.email;
-    let asunto = "Cambio de contraseña de adventure park";
-    let mensaje = `Hola ${a.nombres}, usted cambio su contraseña de ingreso, ahora es: ${cambiar.revalidar}`;
-    
-    fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data:any)=>{
-      console.log(data);
-    });
+        let destino = a.email;
+        let asunto = "Cambio de contraseña de adventure park";
+        let mensaje = `Hola ${a.nombres}, usted cambio su contraseña de ingreso, ahora es: ${cambiar.revalidar}`;
+
+        fetch(`${keys.urlNotificaciones}/email?correo_destino=${destino}&asunto=${asunto}&contenido=${mensaje}`).then((data: any) => {
+          console.log(data);
+        });
 
         return true;
       }

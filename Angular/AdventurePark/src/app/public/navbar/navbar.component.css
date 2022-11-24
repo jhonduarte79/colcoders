@@ -1,46 +1,55 @@
-.brand-logo{
-    margin-left: 20px;
-    color: red;
-    text-transform: uppercase;
-    font-weight: 900;
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Splash&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Russo One';
 }
 
-span{
+.navbar ul{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    color: #fff;
+    background: #222;
+}
+
+.navbar li{
+    list-style-type: none;
+    padding: 1rem;
     color: #fff;
 }
 
-.hide-on-med-and-down li a{
-    font-size: 17px;
+.navbar li a{
+    color: #fff;
+    text-align: center;
+    font-weight: 400;
+    font-size: 18px;
     transition: all 600ms;
-    font-family: 'Russo One', sans-serif;
+    cursor: pointer;
 }
 
-.hide-on-med-and-down li a:hover{
+.navbar li a:hover{
     color: red;
 }
 
-/* MENU TITULO RESPONSIVO */
-
-@media screen and (max-width:600px){
-    .brand-logo {
-        font-size: 22px;
-    }
+.navbar .aqui{
+    color: red;
 }
 
-@media screen and (max-width:450px){
-    .brand-logo {
-        font-size: 19px;
-    }
+.navbar-logo{
+    flex: 1;
+    font-size: 1.5rem;
+    font-weight: 400;
+    user-select: none;
+    font-family: 'Russo One';
+    text-transform: uppercase;
+    padding-left: 20px;
 }
 
-@media screen and (max-width:370px){
-    .brand-logo {
-        font-size: 16px;
-    }
-}
-
-@media screen and (max-width:338px){
-    .brand-logo {
-        font-size: 12px;
-    }
+span{
+    color: red;    
+    font-weight: 400;
+    font-family: 'Russo One';
+    text-transform: uppercase;
 }
